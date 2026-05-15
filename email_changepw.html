@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Konfirmasi Akun NextFlow Pro</title>
+  <title>Reset Password — NextFlow Pro</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -29,39 +29,6 @@
     .email-inner {
       max-width: 580px;
       margin: 0 auto;
-    }
-
-    /* Logo area */
-    .email-logo-area {
-      text-align: center;
-      padding-bottom: 24px;
-    }
-    .email-logo-box {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: #0f2557;
-      padding: 12px 24px;
-      border-radius: 50px;
-    }
-    .email-logo-icon {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, #0d9488, #14b8a6);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-    }
-    .email-logo-text {
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
-    }
-    .email-logo-text span {
-      color: #d4a847;
     }
 
     /* Card */
@@ -105,16 +72,10 @@
 
     /* Info box */
     .info-box {
-      background: linear-gradient(135deg, #f0fdf9, #ecfdf5);
-      border-left: 4px solid #0d9488;
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      border-left: 4px solid #d4a847;
       border-radius: 0 12px 12px 0;
       padding: 16px 20px;
-    }
-
-    /* Feature grid */
-    .feature-item {
-      text-align: center;
-      padding: 0 8px;
     }
 
     /* Footer */
@@ -123,7 +84,7 @@
       text-align: center;
     }
 
-    /* Animations (Will work on Apple Mail & supported clients) */
+    /* Animations */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
@@ -151,69 +112,56 @@
     @media (max-width: 520px) {
       .email-banner-bg { padding: 36px 24px 44px; }
       .email-content-pad { padding: 28px 24px 24px !important; }
-      .feature-grid { display: block !important; }
-      .feature-item { display: inline-block; width: 30%; margin-bottom: 0; }
     }
   </style>
 </head>
 <body style="margin: 0; padding: 0; background-color: #0a1628; background-image: linear-gradient(180deg, #0a1628 0%, #0d1f3c 100%);">
 
-  <!-- WRAPPER UNTUK EMAIL CLIENT -->
   <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="min-height: 100vh; background-image: linear-gradient(180deg, #0a1628 0%, #0d1f3c 100%); background-color: #0a1628;">
     <tr>
       <td align="center" style="padding: 40px 16px 60px;">
 
-        <!-- EMAIL CONTAINER -->
         <div class="email-outer">
           <div class="email-inner">
 
-            <!-- Logo -->
-            <div class="email-logo-area anim-fade-up">
-              <div class="email-logo-box">
-                <div class="email-logo-icon">⚡</div>
-                <div class="email-logo-text">NextFlow <span>Pro</span></div>
+            <div class="email-logo-area anim-fade-up" style="text-align: center; padding-bottom: 24px;">
+              <div style="display: inline-block; background-color: #122851; padding: 14px 28px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <img src="https://nextflowpro.github.io/nextflowpro.web/assets/text_only.png"
+                     alt="NextFlow Pro"
+                     style="height: 36px; width: auto; display: block; margin: 0 auto; border: none;">
               </div>
             </div>
 
-            <!-- Card -->
             <div class="email-card anim-fade-up-d1">
 
-              <!-- BANNER -->
               <div class="email-banner">
                 <div class="email-banner-bg" style="background: linear-gradient(135deg, #07153b 0%, #0f2557 45%, #1a3a6e 100%); position: relative; overflow: hidden;">
                   
-                  <!-- Decorative circles -->
                   <div style="position:absolute; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle, rgba(13,148,136,0.18) 0%, transparent 70%); top:-80px; right:-60px;"></div>
                   <div style="position:absolute; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(212,168,71,0.12) 0%, transparent 70%); bottom:-60px; left:-40px;"></div>
                   <div style="position:absolute; width:1px; height:100%; background:linear-gradient(180deg, transparent, rgba(13,148,136,0.3), transparent); top:0; left:50%;"></div>
 
-                  <!-- Teal accent line top -->
                   <div style="position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, transparent, #0d9488, #d4a847, #0d9488, transparent);"></div>
 
-                  <!-- Icon Badge -->
                   <div class="anim-badge" style="position:relative; z-index:2; margin: 0 auto 24px;">
                     <div style="width:80px; height:80px; background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.12); border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center;">
                       <div style="width:58px; height:58px; background:linear-gradient(135deg, #0d9488, #14b8a6); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; box-shadow: 0 8px 24px rgba(13,148,136,0.5);">
-                        ✉️
+                        🔑
                       </div>
                     </div>
                   </div>
 
                   <div style="position:relative; z-index:2;">
                     <h1 style="color:#ffffff; font-size:26px; font-weight:900; margin:0 0 10px; letter-spacing:-0.5px; line-height:1.2;">
-                      Satu Langkah Lagi!
+                      Reset Password
                     </h1>
                     <p style="color:rgba(255,255,255,0.6); font-size:14px; margin:0; line-height:1.6;">
-                      Konfirmasi email untuk mengaktifkan<br>akun NextFlow Pro Anda
+                      Kami menerima permintaan untuk mengubah<br>password Anda
                     </p>
 
-                    <!-- Status badges -->
                     <div style="display:flex; gap:8px; justify-content:center; margin-top:20px;">
-                      <div style="background:rgba(13,148,136,0.2); border:1px solid rgba(13,148,136,0.4); border-radius:50px; padding:4px 12px; color:#5eead4; font-size:11px; font-weight:700; letter-spacing:0.05em;">
-                        ● SECURE
-                      </div>
-                      <div style="background:rgba(212,168,71,0.15); border:1px solid rgba(212,168,71,0.4); border-radius:50px; padding:4px 12px; color:#f0c85a; font-size:11px; font-weight:700; letter-spacing:0.05em;">
-                        ★ PREMIUM
+                      <div style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); border-radius:50px; padding:4px 12px; color:#fca5a5; font-size:11px; font-weight:700; letter-spacing:0.05em;">
+                        ● URGENT
                       </div>
                     </div>
                   </div>
@@ -221,99 +169,86 @@
                 </div>
               </div>
 
-              <!-- CONTENT -->
               <div class="email-content-pad" style="padding: 40px 44px 32px;">
 
-                <!-- Greeting -->
                 <div class="anim-fade-up-d2">
                   <p style="color:#374151; font-size:16px; line-height:1.7; margin:0 0 6px; font-weight:600;">
-                    Halo, Selamat Datang! 👋
+                    Halo! 👋
                   </p>
                   <p style="color:#6b7280; font-size:14px; line-height:1.8; margin:0 0 28px;">
-                    Terima kasih telah bergabung dengan <strong style="color:#0f2557; font-weight:800;">NextFlow Pro</strong> — platform otomasi entri data terdepan untuk operator puskesmas modern. Klik tombol di bawah untuk memverifikasi email Anda dan membuka akses penuh.
+                    Kami menerima permintaan <strong>reset password</strong> untuk akun <strong style="color:#0f2557; font-weight:800;">NextFlow Pro</strong> Anda. Klik tombol di bawah untuk membuat password baru.
                   </p>
                 </div>
 
-                <!-- CTA -->
                 <div class="anim-fade-up-d3" style="text-align:center; padding:4px 0 36px;">
                   <a href="{{ .ConfirmationURL }}" class="cta-btn anim-pulse-cta" style="display:inline-block; background:linear-gradient(90deg, #c9962a, #d4a847 40%, #f0c85a 100%); color:#0f2557; font-weight:800; font-size:15px; text-decoration:none; padding:18px 44px; border-radius:50px; letter-spacing:0.2px; box-shadow:0 8px 24px rgba(212,168,71,0.45);">
-                    ✓ &nbsp;&nbsp;Aktifkan Akun Saya
+                    🔑 &nbsp;&nbsp;Buat Password Baru
                   </a>
-                  <p style="color:#9ca3af; font-size:12px; margin:14px 0 0;">
-                    Link aktif selama <strong style="color:#0d9488;">24 jam</strong> sejak email ini dikirim
+                  <p style="color:#ef4444; font-size:12px; margin:14px 0 0; font-weight: 600;">
+                    Abaikan email ini jika Anda tidak merasa memintanya.
                   </p>
                 </div>
 
-                <!-- Info box -->
-                <div class="info-box anim-fade-up-d4" style="background:linear-gradient(135deg, #f0fdf9, #ecfdf5); border-left:4px solid #0d9488; border-radius:0 12px 12px 0; padding:16px 20px; margin-bottom:28px;">
+                <div class="info-box anim-fade-up-d4" style="margin-bottom:28px;">
                   <div style="display:flex; align-items:flex-start; gap:12px;">
-                    <div style="width:32px; height:32px; background:linear-gradient(135deg, #0d9488, #14b8a6); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px;">
-                      ℹ️
+                    <div style="width:32px; height:32px; background:linear-gradient(135deg, #fbbf24, #f59e0b); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px;">
+                      ⚠️
                     </div>
                     <div>
-                      <p style="color:#0f766e; font-size:13px; font-weight:700; margin:0 0 4px;">
-                        Informasi Keamanan
+                      <p style="color:#92400e; font-size:13px; font-weight:700; margin:0 0 4px;">
+                        Perhatian
                       </p>
                       <p style="color:#374151; font-size:13px; line-height:1.6; margin:0;">
-                        Link ini <strong>hanya berlaku sekali</strong> dan kadaluarsa dalam <strong>24 jam</strong>. Jika Anda tidak merasa mendaftar, abaikan email ini — akun tidak akan dibuat.
+                        Link ini <strong>hanya berlaku selama 1 jam</strong> dan hanya bisa digunakan <strong>sekali</strong>. Jangan bagikan link ini kepada siapapun.
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <!-- Alt link -->
-                <div class="anim-fade-up-d4" style="background:#f8fafc; border:1px solid #e5e7eb; border-radius:12px; padding:16px 20px; margin-bottom:8px;">
-                  <p style="color:#6b7280; font-size:12px; margin:0 0 6px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">
-                    Tombol tidak berfungsi? Salin link berikut:
-                  </p>
-                  <p style="color:#0d9488; font-size:12px; margin:0; word-break:break-all; font-family:monospace; background:#ecfdf5; padding:8px 12px; border-radius:6px;">
-                    {{ .ConfirmationURL }}
-                  </p>
-                </div>
-
               </div>
 
-              <!-- DIVIDER -->
               <div style="padding:0 44px;">
                 <div style="height:1px; background:linear-gradient(90deg, transparent, #e5e7eb, transparent);"></div>
               </div>
 
-              <!-- FEATURES -->
               <div style="padding:28px 44px 36px;">
-                <p style="color:#9ca3af; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin:0 0 20px; text-align:center;">
-                  Yang bisa Anda lakukan setelah aktivasi
+                <p style="color:#9ca3af; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin:0 0 16px; text-align:center;">
+                  Tips membuat password yang kuat
                 </p>
-                <table width="100%" cellpadding="0" cellspacing="0" class="feature-grid" role="presentation">
+                
+                <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
                   <tr>
-                    <td width="33%" class="feature-item" style="text-align:center; padding:0 8px; vertical-align:top;">
-                      <div style="width:48px; height:48px; background:linear-gradient(135deg, #eff6ff, #dbeafe); border-radius:14px; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:20px;">⚡</div>
-                      <p style="color:#1e40af; font-size:12px; font-weight:700; margin:0 0 3px;">Entri Otomatis</p>
-                      <p style="color:#9ca3af; font-size:11px; margin:0; line-height:1.5;">Hemat 80% waktu kerja harian</p>
+                    <td style="padding:6px 0;">
+                      <p style="color:#4b5563; font-size:13px; margin:0; line-height: 1.5;">
+                        <span style="color: #10b981; font-weight: bold; margin-right: 6px;">✓</span> Minimal 8 karakter
+                      </p>
                     </td>
-                    <td width="33%" class="feature-item" style="text-align:center; padding:0 8px; border-left:1px solid #f3f4f6; border-right:1px solid #f3f4f6; vertical-align:top;">
-                      <div style="width:48px; height:48px; background:linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius:14px; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:20px;">🔐</div>
-                      <p style="color:#166534; font-size:12px; font-weight:700; margin:0 0 3px;">Data Aman</p>
-                      <p style="color:#9ca3af; font-size:11px; margin:0; line-height:1.5;">Enkripsi end-to-end AES-256</p>
+                  </tr>
+                  <tr>
+                    <td style="padding:6px 0;">
+                      <p style="color:#4b5563; font-size:13px; margin:0; line-height: 1.5;">
+                        <span style="color: #10b981; font-weight: bold; margin-right: 6px;">✓</span> Kombinasi huruf besar & kecil
+                      </p>
                     </td>
-                    <td width="33%" class="feature-item" style="text-align:center; padding:0 8px; vertical-align:top;">
-                      <div style="width:48px; height:48px; background:linear-gradient(135deg, #fff7ed, #fed7aa); border-radius:14px; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:20px;">📊</div>
-                      <p style="color:#c2410c; font-size:12px; font-weight:700; margin:0 0 3px;">Laporan Instan</p>
-                      <p style="color:#9ca3af; font-size:11px; margin:0; line-height:1.5;">Export Excel & PDF otomatis</p>
+                  </tr>
+                  <tr>
+                    <td style="padding:6px 0;">
+                      <p style="color:#4b5563; font-size:13px; margin:0; line-height: 1.5;">
+                        <span style="color: #10b981; font-weight: bold; margin-right: 6px;">✓</span> Tambahkan angka & simbol (!@#$)
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:6px 0;">
+                      <p style="color:#4b5563; font-size:13px; margin:0; line-height: 1.5;">
+                        <span style="color: #ef4444; font-weight: bold; margin-right: 6px;">✕</span> Jangan gunakan tanggal lahir atau nama
+                      </p>
                     </td>
                   </tr>
                 </table>
               </div>
 
-            </div><!-- end card -->
-
-            <!-- FOOTER -->
-            <div class="email-footer anim-fade-up-d5">
-              <!-- Social links -->
-              <div style="display:flex; justify-content:center; gap:12px; margin-bottom:16px;">
-                <a href="https://wa.me/6281234899273" style="width:32px; height:32px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:8px; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:14px;" title="WhatsApp">💬</a>
-                <a href="mailto:nextflow.auto@gmail.com" style="width:32px; height:32px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:8px; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:14px;" title="Email">📧</a>
-                <a href="#" style="width:32px; height:32px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:8px; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:14px;" title="Instagram">📷</a>
-              </div>
+            </div><div class="email-footer anim-fade-up-d5">
               <p style="color:#6b7280; font-size:12px; margin:0 0 4px;">
                 Butuh bantuan? &nbsp;
                 <a href="mailto:nextflow.auto@gmail.com" style="color:#0d9488; text-decoration:none; font-weight:600;">nextflow.auto@gmail.com</a>
@@ -321,7 +256,7 @@
                 <a href="https://wa.me/6281234899273" style="color:#0d9488; text-decoration:none; font-weight:600;">+62 812-3489-9273</a>
               </p>
               <p style="color:#9ca3af; font-size:11px; margin:10px 0 0;">
-                © 2026 <strong style="color:#6b7280;">NextFlow Pro</strong> · Hak Cipta Dilindungi · Dibuat dengan ❤️ untuk Puskesmas Indonesia
+                © 2026 <strong style="color:#6b7280;">NextFlow Pro</strong> · Hak Cipta Dilindungi
               </p>
             </div>
 
