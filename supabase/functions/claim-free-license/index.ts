@@ -63,7 +63,13 @@ serve(async (req) => {
       license_key: licenseKey
     });
 
-    // 5. Kembalikan lisensi ke Frontend
+    // 5. Kirim Email
+    await sendFreeLicenseEmail({
+      to: user.email!,
+      licenseKey: licenseKey
+    });
+
+    // 6. Kembalikan lisensi ke Frontend
     return new Response(JSON.stringify({ success: true, license_key: licenseKey }), {
       status: 200, headers: corsHeaders,
     });
@@ -74,3 +80,66 @@ serve(async (req) => {
     });
   }
 });
+
+async function sendFreeLicenseEmail(params: {
+  to: string;
+  licenseKey: string;
+}) {
+  const apiKey = Deno.env.get("RESEND_API_KEY");
+  const from = Deno.env.get("EMAIL_FROM") || "Nextflow Pro <admin@nextflowpro.web.id>";
+
+  if (!apiKey) {
+    console.warn("RESEND_API_KEY not set, skipping email.");
+    return;
+  }
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 640px; margin: auto;">
+      <h2>Token Lisensi Free Trial Nextflow Pro</h2>
+      <p>Terima kasih telah mencoba Nextflow Pro.</p>
+
+      <h3>Detail Lisensi</h3>
+      <table cellpadding="8" cellspacing="0" border="1" style="border-collapse: collapse;">
+        <tr>
+          <td><strong>Paket</strong></td>
+          <td>Free Trial (3 Hari)</td>
+        </tr>
+        <tr>
+          <td><strong>Token Lisensi</strong></td>
+          <td><code style="font-size: 16px;">${params.licenseKey}</code></td>
+        </tr>
+      </table>
+
+      <p style="margin-top: 20px;">
+        Cara aktivasi:
+      </p>
+      <ol>
+        <li>Buka aplikasi Nextflow Pro.</li>
+        <li>Masukkan token lisensi di atas.</li>
+      </ol>
+
+      <p>
+        Jika Anda menyukai fitur kami, jangan ragu untuk upgrade ke paket Pro!
+      </p>
+    </div>
+  `;
+
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from,
+        to: params.to,
+        subject: `Token Free Trial Nextflow Pro`,
+        html,
+      }),
+    });
+  } catch (err) {
+    console.error("Failed to send free license email:", err);
+  }
+}
+

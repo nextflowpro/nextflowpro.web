@@ -44,7 +44,7 @@ async function sendLicenseEmail(params: {
   amount: number;
 }) {
   const apiKey = Deno.env.get("RESEND_API_KEY");
-  const from = Deno.env.get("EMAIL_FROM") || "Nextflow Pro <nextflowpro.bisnis@gmail.com>";
+  const from = Deno.env.get("EMAIL_FROM") || "Nextflow Pro <admin@nextflowpro.web.id>";
 
   if (!apiKey) {
     console.warn("RESEND_API_KEY not set, skipping email.");
