@@ -1,4 +1,3 @@
-import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -28,80 +27,57 @@ function getMidtransSnapUrl() {
 }
 
 function makeOrderId(tier: string) {
-  const random = crypto.randomUUID().replaceAll("-", "").slice(0, 10).toUpperCase();
+  const random = crypto.randomUUID().replaceAll("-", "").slice(0, 8).toUpperCase();
   return `NFP-${tier.toUpperCase()}-${Date.now()}-${random}`;
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
 
   try {
-    if (req.method !== "POST") {
-      return new Response(
-        JSON.stringify({ success: false, message: "Method not allowed" }),
-        { status: 405, headers: corsHeaders },
-      );
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    const midtransServerKey = Deno.env.get("MIDTRANS_SERVER_KEY")?.trim();
+    const siteUrl = Deno.env.get("SITE_URL")?.trim();
+    const isProduction = Deno.env.get("MIDTRANS_IS_PRODUCTION") === "true";
+
+    // Validasi Secrets
+    if (!midtransServerKey || !siteUrl || !supabaseUrl || !serviceRoleKey) {
+      throw new Error("Konfigurasi server (Secrets) belum lengkap di dashboard Supabase.");
     }
 
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const midtransServerKey = Deno.env.get("MIDTRANS_SERVER_KEY")!;
-    const siteUrl = Deno.env.get("SITE_URL")!;
+    // Cek apakah user salah memasukkan Client Key (seharusnya Server Key)
+    if (midtransServerKey.includes("-client-")) {
+      throw new Error("Anda memasukkan CLIENT_KEY ke dalam MIDTRANS_SERVER_KEY. Harap gunakan SERVER_KEY.");
+    }
 
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
-      return new Response(
-        JSON.stringify({ success: false, message: "Unauthorized" }),
-        { status: 401, headers: corsHeaders },
-      );
+      return new Response(JSON.stringify({ success: false, message: "Unauthorized" }), { status: 401, headers: corsHeaders });
     }
 
-    const userClient = createClient(supabaseUrl, anonKey, {
-      global: {
-        headers: {
-          Authorization: authHeader,
-        },
-      },
+    const userClient = createClient(supabaseUrl, anonKey!, {
+      global: { headers: { Authorization: authHeader } },
     });
-
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
 
-    const {
-      data: { user },
-      error: userError,
-    } = await userClient.auth.getUser();
-
+    const { data: { user }, error: userError } = await userClient.auth.getUser();
     if (userError || !user) {
-      return new Response(
-        JSON.stringify({ success: false, message: "User tidak valid" }),
-        { status: 401, headers: corsHeaders },
-      );
+      return new Response(JSON.stringify({ success: false, message: "Sesi tidak valid" }), { status: 401, headers: corsHeaders });
     }
 
     const body = await req.json();
     const tier = body.tier as Tier;
-
-    if (!["Basic", "Pro"].includes(tier)) {
-      return new Response(
-        JSON.stringify({ success: false, message: "Paket tidak valid" }),
-        { status: 400, headers: corsHeaders },
-      );
+    if (!PRODUCT_MAP[tier]) {
+      return new Response(JSON.stringify({ success: false, message: "Paket tidak valid" }), { status: 400, headers: corsHeaders });
     }
 
     const product = PRODUCT_MAP[tier];
     const orderId = makeOrderId(tier);
-    const email = user.email ?? "";
-
-    if (!email) {
-      return new Response(
-        JSON.stringify({ success: false, message: "Email user tidak ditemukan" }),
-        { status: 400, headers: corsHeaders },
-      );
-    }
-
+    const email = user.email || "";
     const invoiceNumber = `INV-${new Date().getFullYear()}-${orderId}`;
 
     const payload = {
@@ -111,40 +87,35 @@ serve(async (req) => {
       },
       customer_details: {
         email,
-        first_name:
-          user.user_metadata?.full_name ||
-          user.user_metadata?.name ||
-          email.split("@")[0],
+        first_name: user.user_metadata?.full_name || email.split("@")[0],
       },
       item_details: [
         {
-          id: `NEXTFLOW-${tier.toUpperCase()}`,
+          id: `NFP-${tier.toUpperCase()}`,
           price: product.amount,
           quantity: 1,
           name: product.name,
         },
       ],
       callbacks: {
-        finish: `${siteUrl}/payment/success?order_id=${orderId}`,
-        error: `${siteUrl}/payment/error?order_id=${orderId}`,
-        pending: `${siteUrl}/payment/pending?order_id=${orderId}`,
-      },
-      expiry: {
-        unit: "hours",
-        duration: 24,
+        finish: `${siteUrl}/#harga`, // Redirect kembali ke landing page jika beres
+        error: `${siteUrl}/#harga`,
+        pending: `${siteUrl}/#harga`,
       },
       custom_field1: user.id,
       custom_field2: tier,
       custom_field3: invoiceNumber,
     };
 
-    const authString = btoa(`${midtransServerKey}:`);
+    console.log(`[${orderId}] Menghubungi Midtrans (${isProduction ? 'PROD' : 'SANDBOX'})...`);
 
+    const authString = btoa(`${midtransServerKey}:`);
     const midtransRes = await fetch(getMidtransSnapUrl(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${authString}`,
+        "Accept": "application/json",
+        "Authorization": `Basic ${authString}`,
       },
       body: JSON.stringify(payload),
     });
@@ -152,16 +123,18 @@ serve(async (req) => {
     const midtransData = await midtransRes.json();
 
     if (!midtransRes.ok) {
+      console.error(`[${orderId}] MIDTRANS_ERROR:`, JSON.stringify(midtransData, null, 2));
       return new Response(
         JSON.stringify({
           success: false,
-          message: "Gagal membuat transaksi Midtrans",
+          message: "Midtrans Error: " + (midtransData.error_messages?.join(", ") || "Terjadi kesalahan di server Midtrans"),
           detail: midtransData,
         }),
-        { status: 500, headers: corsHeaders },
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
 
+    // Simpan ke Database
     const { error: insertError } = await adminClient
       .from("payment_transactions")
       .insert({
@@ -177,15 +150,16 @@ serve(async (req) => {
       });
 
     if (insertError) {
+      console.error("DB_INSERT_ERROR:", insertError);
       return new Response(
-        JSON.stringify({
-          success: false,
-          message: "Gagal menyimpan transaksi",
-          detail: insertError.message,
+        JSON.stringify({ 
+          success: false, 
+          message: "Gagal simpan ke DB: " + insertError.message 
         }),
-        { status: 500, headers: corsHeaders },
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
+console.log(`[${orderId}] Berhasil membuat token Snap.`);
 
     return new Response(
       JSON.stringify({
@@ -194,15 +168,16 @@ serve(async (req) => {
         snap_token: midtransData.token,
         redirect_url: midtransData.redirect_url,
       }),
-      { status: 200, headers: corsHeaders },
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
+
   } catch (e) {
+    console.error("CRITICAL_ERROR:", e.message);
     return new Response(
-      JSON.stringify({
-        success: false,
-        message: String(e),
-      }),
-      { status: 500, headers: corsHeaders },
+      JSON.stringify({ success: false, message: e.message }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
 });
+
+

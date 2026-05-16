@@ -1,5 +1,9 @@
-import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
 
 async function sha512(input: string) {
   const data = new TextEncoder().encode(input);
@@ -42,6 +46,7 @@ async function sendLicenseEmail(params: {
   licenseKey: string;
   invoiceNumber: string;
   amount: number;
+  paymentType?: string;
 }) {
   const apiKey = Deno.env.get("RESEND_API_KEY");
   const from = Deno.env.get("EMAIL_FROM") || "Nextflow Pro <admin@nextflowpro.web.id>";
@@ -51,44 +56,109 @@ async function sendLicenseEmail(params: {
     return;
   }
 
+  // Map Payment Type to readable name
+  const paymentMethodMap: Record<string, string> = {
+    "bank_transfer": "Bank Transfer",
+    "cstore": "Convenience Store",
+    "qris": "QRIS",
+    "credit_card": "Credit Card",
+    "echannel": "Mandiri Bill",
+    "permata_va": "Permata VA",
+    "gopay": "GoPay",
+    "shopeepay": "ShopeePay"
+  };
+  const methodLabel = paymentMethodMap[params.paymentType || ""] || params.paymentType || "Online Payment";
+
   const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 640px; margin: auto;">
-      <h2>Terima kasih telah membeli Nextflow Pro</h2>
-      <p>Pembayaran Anda telah berhasil diverifikasi.</p>
-
-      <h3>Detail Lisensi</h3>
-      <table cellpadding="8" cellspacing="0" border="1" style="border-collapse: collapse;">
-        <tr>
-          <td><strong>Paket</strong></td>
-          <td>${params.tier}</td>
-        </tr>
-        <tr>
-          <td><strong>Token Lisensi</strong></td>
-          <td><code style="font-size: 16px;">${params.licenseKey}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Invoice</strong></td>
-          <td>${params.invoiceNumber}</td>
-        </tr>
-        <tr>
-          <td><strong>Total</strong></td>
-          <td>Rp ${params.amount.toLocaleString("id-ID")}</td>
-        </tr>
-      </table>
-
-      <p style="margin-top: 20px;">
-        Cara aktivasi:
-      </p>
-      <ol>
-        <li>Buka aplikasi Nextflow Pro.</li>
-        <li>Masukkan token lisensi di atas.</li>
-        <li>Token akan terkunci ke laptop pertama yang digunakan.</li>
-      </ol>
-
-      <p>
-        Jika ada kendala, silakan hubungi admin/support.
-      </p>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisensi Nextflow Pro</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        :root { --primary: #3b82f6; --success: #10b981; --slate-900: #0f172a; --slate-600: #475569; --slate-400: #94a3b8; --slate-100: #f1f5f9; --white: #ffffff; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; color: #0f172a; margin: 0; padding: 0; background-color: #f8fafc; }
+        .wrapper { width: 100%; padding: 40px 20px; background-color: #f8fafc; }
+        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05); }
+        .header { background: #0f172a; padding: 40px 20px; text-align: center; }
+        .content { padding: 48px; }
+        .badge { display: inline-block; padding: 6px 16px; background: #ecfdf5; color: #10b981; border-radius: 9999px; font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 24px; }
+        h1 { margin: 0 0 16px 0; font-size: 28px; font-weight: 800; color: #0f172a; line-height: 1.2; }
+        p { margin: 0 0 24px 0; color: #475569; font-size: 16px; }
+        .license-card { background: #0f172a; border-radius: 20px; padding: 32px; color: #ffffff; text-align: center; margin: 32px 0; position: relative; overflow: hidden; }
+        .license-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 12px; }
+        .license-key { font-family: 'Monaco', 'Consolas', monospace; font-size: 24px; font-weight: 700; color: #fbbf24; letter-spacing: 2px; }
+        .transaction-details { border: 1px solid #f1f5f9; border-radius: 16px; padding: 24px; margin-bottom: 32px; }
+        .detail-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: #475569; font-size: 14px; }
+        .detail-value { font-weight: 600; color: #0f172a; font-size: 14px; }
+        .instructions { background: #fffbeb; border-left: 4px solid #fbbf24; padding: 20px; border-radius: 12px; margin-bottom: 32px; }
+        .instructions-title { font-weight: 700; color: #92400e; font-size: 14px; margin-bottom: 8px; }
+        .footer { padding: 40px; background: #f1f5f9; text-align: center; }
+        .copyright { font-size: 12px; color: #94a3b8; }
+        @media (max-width: 480px) { .content { padding: 32px 24px; } h1 { font-size: 24px; } .license-key { font-size: 18px; } }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="header">
+                <img src="https://nextflowpro.github.io/nextflowpro.web/assets/text_only.png" alt="Nextflow Pro" style="height: 32px;">
+            </div>
+            <div class="content">
+                <div class="badge">Pembayaran Berhasil</div>
+                <h1>Lisensi Nextflow Pro Anda Telah Terbit</h1>
+                <p>Halo,</p>
+                <p>Terima kasih telah memilih Nextflow Pro. Token lisensi Anda sudah siap digunakan untuk mengaktifkan fitur premium.</p>
+                <div class="license-card">
+                    <div class="license-label">Token Lisensi Premium</div>
+                    <div class="license-key">${params.licenseKey}</div>
+                    <div style="margin-top: 12px; font-size: 11px; color: #94a3b8;">Simpan kode ini dengan aman</div>
+                </div>
+                <div class="transaction-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Paket</span>
+                        <span class="detail-value">${params.tier}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Nomor Invoice</span>
+                        <span class="detail-value">${params.invoiceNumber || "-"}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Total Pembayaran</span>
+                        <span class="detail-value">Rp ${params.amount.toLocaleString("id-ID")}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Metode Pembayaran</span>
+                        <span class="detail-value">${methodLabel}</span>
+                    </div>
+                </div>
+                <div class="instructions">
+                    <div class="instructions-title">💡 Cara Aktivasi</div>
+                    <ol style="margin: 0; padding-left: 20px; font-size: 14px; color: #92400e;">
+                        <li>Buka aplikasi <strong>Nextflow Pro</strong> di laptop Anda.</li>
+                        <li>Masuk ke menu <strong>Lisensi/Aktivasi</strong>.</li>
+                        <li>Copy & Paste token di atas ke kolom yang tersedia.</li>
+                        <li>Klik <strong>Aktifkan</strong> dan nikmati fitur premium!</li>
+                    </ol>
+                </div>
+                <p style="font-size: 14px; text-align: center; color: #94a3b8; margin: 0;">
+                    Butuh bantuan? Balas email ini atau hubungi support kami via WhatsApp.
+                </p>
+            </div>
+            <div class="footer">
+                <div class="copyright">
+                    &copy; ${new Date().getFullYear()} Nextflow Pro. Hak Cipta Dilindungi.<br>
+                    Sent from Nextflow Pro Team
+                </div>
+            </div>
+        </div>
     </div>
+</body>
+</html>
   `;
 
   const res = await fetch("https://api.resend.com/emails", {
@@ -105,51 +175,52 @@ async function sendLicenseEmail(params: {
     }),
   });
 
+  const data = await res.json();
   if (!res.ok) {
-    const text = await res.text();
-    console.error("Email send failed:", text);
+    console.error("RESEND_ERROR:", data);
+  } else {
+    console.log("EMAIL_SENT_SUCCESS:", data.id);
   }
 }
 
-serve(async (req) => {
-  try {
-    if (req.method !== "POST") {
-      return new Response("Method not allowed", { status: 405 });
-    }
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
 
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const midtransServerKey = Deno.env.get("MIDTRANS_SERVER_KEY")!;
+  try {
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    const midtransServerKey = Deno.env.get("MIDTRANS_SERVER_KEY")?.trim();
+
+    if (!supabaseUrl || !serviceRoleKey || !midtransServerKey) {
+      throw new Error("Missing secrets for webhook processing");
+    }
 
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
-
     const notif = await req.json();
 
-    const orderId = notif.order_id;
-    const statusCode = notif.status_code;
-    const grossAmount = notif.gross_amount;
-    const signatureKey = notif.signature_key;
-    const transactionStatus = notif.transaction_status;
-    const fraudStatus = notif.fraud_status;
-    const transactionId = notif.transaction_id;
-    const paymentType = notif.payment_type;
+    const {
+      order_id: orderId,
+      status_code: statusCode,
+      gross_amount: grossAmount,
+      signature_key: signatureKey,
+      transaction_status: transactionStatus,
+      fraud_status: fraudStatus,
+      transaction_id: transactionId,
+      payment_type: paymentType
+    } = notif;
 
-    if (!orderId || !statusCode || !grossAmount || !signatureKey) {
-      return new Response(
-        JSON.stringify({ success: false, message: "Invalid payload" }),
-        { status: 400 },
-      );
-    }
+    console.log(`[${orderId}] Webhook received: ${transactionStatus}`);
 
+    // Verify Signature
     const expectedSignature = await sha512(
       `${orderId}${statusCode}${grossAmount}${midtransServerKey}`,
     );
 
     if (expectedSignature !== signatureKey) {
-      return new Response(
-        JSON.stringify({ success: false, message: "Invalid signature" }),
-        { status: 403 },
-      );
+      console.error(`[${orderId}] INVALID_SIGNATURE`, { expected: expectedSignature, received: signatureKey });
+      return new Response(JSON.stringify({ success: false, message: "Invalid signature" }), { status: 403 });
     }
 
     const { data: tx, error: txError } = await adminClient
@@ -159,15 +230,13 @@ serve(async (req) => {
       .single();
 
     if (txError || !tx) {
-      return new Response(
-        JSON.stringify({ success: false, message: "Transaction not found" }),
-        { status: 404 },
-      );
+      console.error(`[${orderId}] TRANSACTION_NOT_FOUND`);
+      return new Response(JSON.stringify({ success: false, message: "Transaction not found" }), { status: 404 });
     }
 
     const mappedStatus = mapMidtransStatus(transactionStatus);
 
-    // Jika belum sukses, cukup update status
+    // If payment not success, just update status
     if (!isPaymentSuccess(transactionStatus, fraudStatus)) {
       await adminClient
         .from("payment_transactions")
@@ -180,58 +249,29 @@ serve(async (req) => {
         })
         .eq("order_id", orderId);
 
-      return new Response(
-        JSON.stringify({ success: true, message: "Status updated", status: mappedStatus }),
-        { status: 200 },
-      );
+      return new Response(JSON.stringify({ success: true, message: "Status updated", status: mappedStatus }), { status: 200 });
     }
 
-    // Idempotency: jika sudah pernah generate license, jangan generate ulang
+    // Idempotency check
     if (tx.status === "paid" && tx.license_key) {
-      return new Response(
-        JSON.stringify({
-          success: true,
-          message: "Already processed",
-          license_key: tx.license_key,
-        }),
-        { status: 200 },
-      );
+      console.log(`[${orderId}] ALREADY_PROCESSED`);
+      return new Response(JSON.stringify({ success: true, message: "Already processed" }), { status: 200 });
     }
 
-    // Generate license via RPC existing Anda
+    // Generate license via RPC
     const { data: licenseResult, error: licenseError } = await adminClient.rpc(
       "generate_license",
-      {
-        p_user_id: tx.user_id,
-        p_tier: tx.tier,
-      },
+      { p_user_id: tx.user_id, p_tier: tx.tier }
     );
 
-    if (licenseError) {
-      console.error("generate_license error:", licenseError);
-      return new Response(
-        JSON.stringify({
-          success: false,
-          message: "Failed to generate license",
-          detail: licenseError.message,
-        }),
-        { status: 500 },
-      );
-    }
-
-    if (!licenseResult?.success) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          message: "generate_license returned failed",
-          detail: licenseResult,
-        }),
-        { status: 500 },
-      );
+    if (licenseError || !licenseResult?.success) {
+      console.error(`[${orderId}] LICENSE_GENERATE_ERROR:`, licenseError || licenseResult);
+      return new Response(JSON.stringify({ success: false, message: "Failed to generate license" }), { status: 500 });
     }
 
     const licenseKey = licenseResult.license_key;
 
+    // Update Transaction as PAID
     await adminClient
       .from("payment_transactions")
       .update({
@@ -245,52 +285,33 @@ serve(async (req) => {
       })
       .eq("order_id", orderId);
 
+    // Sync User Profile
+    await adminClient
+      .from("profiles")
+      .update({ subscription_tier: tx.tier })
+      .eq("id", tx.user_id);
+
+    // Send Email
     await sendLicenseEmail({
       to: tx.email,
       tier: tx.tier,
       licenseKey,
       invoiceNumber: tx.invoice_number,
       amount: tx.amount,
+      paymentType: paymentType,
     });
 
     await adminClient
       .from("payment_transactions")
-      .update({
-        invoice_sent_at: new Date().toISOString(),
-      })
+      .update({ invoice_sent_at: new Date().toISOString() })
       .eq("order_id", orderId);
 
-    // Update subscription_tier di tabel profiles agar sinkron dengan aplikasi
-    await adminClient
-      .from("profiles")
-      .update({ subscription_tier: tx.tier })
-      .eq("id", tx.user_id);
+    console.log(`[${orderId}] WEBHOOK_COMPLETE: License delivered to ${tx.email}`);
 
-    // Hapus otomatis paket Free jika user membeli paket berbayar (Upgrade)
-    if (tx.tier === "Pro" || tx.tier === "Basic") {
-      await adminClient
-        .from("user_licenses")
-        .delete()
-        .eq("user_id", tx.user_id)
-        .eq("tier_type", "Free");
-    }
+    return new Response(JSON.stringify({ success: true, message: "Processed" }), { status: 200 });
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: "Payment processed and license generated",
-        license_key: licenseKey,
-      }),
-      { status: 200 },
-    );
   } catch (e) {
-    console.error(e);
-    return new Response(
-      JSON.stringify({
-        success: false,
-        message: String(e),
-      }),
-      { status: 500 },
-    );
+    console.error("WEBHOOK_CATCH_ERROR:", e.message);
+    return new Response(JSON.stringify({ success: false, message: e.message }), { status: 500 });
   }
 });

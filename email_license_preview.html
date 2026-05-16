@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisensi Nextflow Pro - Preview</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --success: #10b981;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-600: #475569;
+            --slate-400: #94a3b8;
+            --slate-100: #f1f5f9;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--slate-900);
+            margin: 0;
+            padding: 0;
+            background-color: #f8fafc;
+        }
+
+        .wrapper {
+            width: 100%;
+            padding: 40px 20px;
+            background-color: #f8fafc;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        }
+
+        .header {
+            background: var(--slate-900);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 48px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: #ecfdf5;
+            color: var(--success);
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin: 0 0 16px 0;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--slate-900);
+            line-height: 1.2;
+        }
+
+        p {
+            margin: 0 0 24px 0;
+            color: var(--slate-600);
+            font-size: 16px;
+        }
+
+        .license-card {
+            background: var(--slate-900);
+            border-radius: 20px;
+            padding: 32px;
+            color: var(--white);
+            text-align: center;
+            margin: 32px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .license-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .license-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--slate-400);
+            margin-bottom: 12px;
+        }
+
+        .license-key {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fbbf24;
+            letter-spacing: 2px;
+            word-break: break-all;
+        }
+
+        .transaction-details {
+            border: 1px solid var(--slate-100);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--slate-100);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--slate-600);
+            font-size: 14px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--slate-900);
+            font-size: 14px;
+        }
+
+        .instructions {
+            background: #fffbeb;
+            border-left: 4px solid #fbbf24;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .instructions-title {
+            font-weight: 700;
+            color: #92400e;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer {
+            padding: 40px;
+            background: var(--slate-100);
+            text-align: center;
+        }
+
+        .social-links {
+            margin-bottom: 24px;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: var(--slate-600);
+            text-decoration: none;
+        }
+
+        .copyright {
+            font-size: 12px;
+            color: var(--slate-400);
+        }
+
+        @media (max-width: 480px) {
+            .content { padding: 32px 24px; }
+            h1 { font-size: 24px; }
+            .license-key { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="header">
+                <img src="https://nextflowpro.github.io/nextflowpro.web/assets/text_only.png" alt="Nextflow Pro" style="height: 32px;">
+            </div>
+            
+            <div class="content">
+                <div class="badge">Pembayaran Berhasil</div>
+                <h1>Lisensi Nextflow Pro Anda Telah Terbit</h1>
+                <p>Halo,</p>
+                <p>Terima kasih telah memilih Nextflow Pro. Token lisensi Anda sudah siap digunakan untuk mengaktifkan fitur premium.</p>
+
+                <div class="license-card">
+                    <div class="license-label">Token Lisensi Premium</div>
+                    <div class="license-key">PRO-20260516-A501426B2E</div>
+                    <div style="margin-top: 12px; font-size: 11px; color: var(--slate-400);">Simpan kode ini dengan aman</div>
+                </div>
+
+                <div class="transaction-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Paket</span>
+                        <span class="detail-value">Pro Edition</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Nomor Invoice</span>
+                        <span class="detail-value">INV-2026-NFP-PRO-1778901692644</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Total Pembayaran</span>
+                        <span class="detail-value">Rp 305.000</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Metode Pembayaran</span>
+                        <span class="detail-value">Bank Transfer (BCA)</span>
+                    </div>
+                </div>
+
+                <div class="instructions">
+                    <div class="instructions-title">💡 Cara Aktivasi</div>
+                    <ol style="margin: 0; padding-left: 20px; font-size: 14px; color: #92400e;">
+                        <li>Buka aplikasi <strong>Nextflow Pro</strong> di laptop Anda.</li>
+                        <li>Masuk ke menu <strong>Lisensi/Aktivasi</strong>.</li>
+                        <li>Copy & Paste token di atas ke kolom yang tersedia.</li>
+                        <li>Klik <strong>Aktifkan</strong> dan nikmati fitur premium!</li>
+                    </ol>
+                </div>
+
+                <p style="font-size: 14px; text-align: center; color: var(--slate-400); margin: 0;">
+                    Butuh bantuan? Balas email ini atau hubungi support kami via WhatsApp.
+                </p>
+            </div>
+
+            <div class="footer">
+                <div class="copyright">
+                    &copy; 2026 Nextflow Pro. Hak Cipta Dilindungi.<br>
+                    Sent with from Nextflow Pro Team
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
