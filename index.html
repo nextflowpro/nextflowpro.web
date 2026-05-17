@@ -95,18 +95,27 @@
   <style>
     * { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
 
+    /* Prevent horizontal overflow page-wide */
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
     /* Mobile Accessibility/Font Zoom Protection for Navbar Logo */
     @media (max-width: 640px) {
       .navbar-logo-icon {
-        height: 24px !important;
+        height: 20px !important;
         width: auto !important;
       }
       .navbar-logo-text {
-        height: 28px !important;
+        height: 24px !important;
+        max-width: 110px !important;
         width: auto !important;
       }
       #navbar .flex {
-        gap: 6px !important;
+        gap: 4px !important;
       }
     }
 
