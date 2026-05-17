@@ -118,24 +118,24 @@ async function sendLicenseEmail(params: {
                     <div class="license-key">${params.licenseKey}</div>
                     <div style="margin-top: 12px; font-size: 11px; color: #94a3b8;">Simpan kode ini dengan aman</div>
                 </div>
-                <div class="transaction-details">
-                    <div class="detail-row">
-                        <span class="detail-label">Paket</span>
-                        <span class="detail-value">${params.tier}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Nomor Invoice</span>
-                        <span class="detail-value">${params.invoiceNumber || "-"}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Total Pembayaran</span>
-                        <span class="detail-value">Rp ${params.amount.toLocaleString("id-ID")}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Metode Pembayaran</span>
-                        <span class="detail-value">${methodLabel}</span>
-                    </div>
-                </div>
+                <table class="transaction-details" style="width: 100%; border-collapse: collapse; margin: 32px 0; border: 1px solid #f1f5f9; border-radius: 16px; display: table;">
+                    <tr class="detail-row" style="border-bottom: 1px solid #f1f5f9;">
+                        <td class="detail-label" style="color: #475569; font-size: 14px; padding: 12px 16px; text-align: left;">Paket</td>
+                        <td class="detail-value" style="font-weight: 600; color: #0f172a; font-size: 14px; padding: 12px 16px; text-align: right;">${params.tier}</td>
+                    </tr>
+                    <tr class="detail-row" style="border-bottom: 1px solid #f1f5f9;">
+                        <td class="detail-label" style="color: #475569; font-size: 14px; padding: 12px 16px; text-align: left;">Nomor Invoice</td>
+                        <td class="detail-value" style="font-weight: 600; color: #0f172a; font-size: 14px; padding: 12px 16px; text-align: right;">${params.invoiceNumber || "-"}</td>
+                    </tr>
+                    <tr class="detail-row" style="border-bottom: 1px solid #f1f5f9;">
+                        <td class="detail-label" style="color: #475569; font-size: 14px; padding: 12px 16px; text-align: left;">Total Pembayaran</td>
+                        <td class="detail-value" style="font-weight: 600; color: #0f172a; font-size: 14px; padding: 12px 16px; text-align: right;">Rp ${params.amount.toLocaleString("id-ID")}</td>
+                    </tr>
+                    <tr class="detail-row">
+                        <td class="detail-label" style="color: #475569; font-size: 14px; padding: 12px 16px; text-align: left;">Metode Pembayaran</td>
+                        <td class="detail-value" style="font-weight: 600; color: #0f172a; font-size: 14px; padding: 12px 16px; text-align: right;">${methodLabel}</td>
+                    </tr>
+                </table>
                 <div class="instructions">
                     <div class="instructions-title">💡 Cara Aktivasi</div>
                     <ol style="margin: 0; padding-left: 20px; font-size: 14px; color: #92400e;">
