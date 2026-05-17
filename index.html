@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Preconnect to critical domains for instant connection setup -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://app.sandbox.midtrans.com">
+  <link rel="preconnect" href="https://snap-assets.al-pc-id-b.cdn.gtflabs.io" crossorigin>
+
   <title>NextFlow Pro | Otomasi Entri Data Puskesmas Terbaik</title>
   <meta name="description" content="NextFlow Pro adalah software otomasi entri data terbaik untuk operator puskesmas. Hemat waktu hingga 80%, tingkatkan akurasi input data hingga 99%, dan eliminasi human error secara instan." />
   <meta name="keywords" content="nextflow pro, nextflowpro, otomasi data puskesmas, entri data otomatis, software puskesmas, asisten operator puskesmas, entri pcare, input data otomatis" />
@@ -90,8 +98,13 @@
 
   <link rel="icon" type="image/x-icon" href="assets/logo_icon.ico">
   <link rel="stylesheet" href="assets/style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  
+  <!-- Asynchronous stylesheet loading to eliminate render-blocking CSS -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></noscript>
+  
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"></noscript>
   <style>
     * { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
 
@@ -330,9 +343,7 @@
     .table-row:nth-child(even) {
       background: rgba(13,148,136,0.04);
     }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-YVNorDG5HZyKCjun"></script>
+</style>
 </head>
 
 <body class="bg-white text-gray-800 antialiased">
@@ -1255,6 +1266,8 @@
   </footer>
 
   <!-- ===== JAVASCRIPT ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-YVNorDG5HZyKCjun"></script>
   <script>
     // ---- Navbar scroll effect ----
     const navbar = document.getElementById('navbar');
