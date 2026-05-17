@@ -288,7 +288,7 @@ async function sendFreeLicenseEmail(params: {
       body: JSON.stringify({
         from,
         to: params.to,
-        subject: `Token Free Trial Nextflow Pro`,
+        subject: `Token Lisensi Nextflow Pro - Free Trial`,
         html,
       }),
     });
