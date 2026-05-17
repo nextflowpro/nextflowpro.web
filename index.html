@@ -545,11 +545,13 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
       <div class="text-center mb-14 fade-up">
         <span class="inline-block bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-4 border border-blue-100">Cara Kerja</span>
-        <h2 class="text-3xl sm:text-4xl font-black text-gray-900">Mulai dalam <span style="background:linear-gradient(90deg,#0f2557,#1a3a7c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">4 Langkah Mudah</span></h2>
+        <h2 class="text-3xl sm:text-4xl font-black text-gray-900">Mulai dalam <span style="background:linear-gradient(90deg,#0f2557,#1a3a7c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">5 Langkah Mudah</span></h2>
         <p class="text-gray-500 mt-4 max-w-xl mx-auto">Tidak perlu keahlian teknis khusus. Siapapun dapat menggunakan NextFlow Pro.</p>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6">
+      <!-- Row 1: 3 Cards di Atas -->
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
         <div class="flex gap-5 items-start bg-gray-50 rounded-2xl p-6 border border-gray-100 card-hover fade-up">
           <div class="step-number">1</div>
           <div>
@@ -557,6 +559,7 @@
             <p class="text-gray-500 text-sm leading-relaxed">Buat akun menggunakan email atau nomor WhatsApp Anda. Proses registrasi hanya memakan waktu kurang dari 2 menit.</p>
           </div>
         </div>
+        <!-- Card 2 -->
         <div class="flex gap-5 items-start bg-gray-50 rounded-2xl p-6 border border-gray-100 card-hover fade-up" style="transition-delay:0.1s">
           <div class="step-number">2</div>
           <div>
@@ -564,6 +567,7 @@
             <p class="text-gray-500 text-sm leading-relaxed">Pilih paket Basic atau Pro sesuai kebutuhan operasional puskesmas Anda. Pembayaran mudah melalui berbagai metode.</p>
           </div>
         </div>
+        <!-- Card 3 -->
         <div class="flex gap-5 items-start bg-gray-50 rounded-2xl p-6 border border-gray-100 card-hover fade-up" style="transition-delay:0.2s">
           <div class="step-number">3</div>
           <div>
@@ -571,18 +575,37 @@
             <p class="text-gray-500 text-sm leading-relaxed">Setelah pembayaran terkonfirmasi, lisensi akan aktif secara otomatis dalam hitungan menit. Anda akan menerima notifikasi via email.</p>
           </div>
         </div>
+      </div>
+
+      <!-- Row 2: 2 Cards di Bawah (Berpusat & Proporsional) -->
+      <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mt-6">
+        <!-- Card 4 -->
         <div class="flex gap-5 items-start bg-gray-50 rounded-2xl p-6 border border-gray-100 card-hover fade-up" style="transition-delay:0.3s">
           <div class="step-number">4</div>
           <div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2">Download Aplikasi</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Unduh file installer NextFlow Pro (64-bit atau 32-bit) melalui tombol download di bawah ini sesuai spesifikasi Windows Anda.</p>
+          </div>
+        </div>
+        <!-- Card 5 -->
+        <div class="flex gap-5 items-start bg-gray-50 rounded-2xl p-6 border border-gray-100 card-hover fade-up" style="transition-delay:0.4s">
+          <div class="step-number">5</div>
+          <div>
             <h3 class="font-bold text-lg text-gray-900 mb-2">Aplikasi siap digunakan</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">NextFlow Pro langsung siap mengotomasi seluruh proses entri data.</p>
+            <p class="text-gray-500 text-sm leading-relaxed">Jalankan file setup, lakukan instalasi cepat, lalu masuk dengan akun Anda. Nextflow Pro langsung siap mengotomatisasi entri data!</p>
           </div>
         </div>
       </div>
 
-      <div class="text-center mt-10 fade-up">
-        <a href="#harga" class="btn-teal text-white font-bold px-8 py-4 rounded-full inline-flex items-center gap-2">
-          <i class="fas fa-rocket"></i> Mulai Sekarang
+      <!-- Tombol Unduh Ganda (Direct Download) -->
+      <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-12 fade-up">
+        <!-- Tombol 64-bit (Utama) -->
+        <a href="https://github.com/nextflowpro/Releases/releases/latest/download/NextflowPro_Setup.exe" class="btn-teal text-white font-bold px-8 py-4 rounded-full inline-flex items-center gap-2 shadow-md hover:shadow-lg transition-all hover:scale-105">
+          <i class="fab fa-windows text-lg"></i> Download 64-bit (Rekomendasi)
+        </a>
+        <!-- Tombol 32-bit (Sekunder Outline) -->
+        <a href="https://github.com/nextflowpro/Releases/releases/latest/download/NextflowPro_x86_Setup.exe" class="border-2 border-teal-500 text-teal-600 hover:bg-teal-50 font-bold px-8 py-4 rounded-full inline-flex items-center gap-2 transition-all hover:scale-105">
+          <i class="fab fa-windows text-lg"></i> Download 32-bit
         </a>
       </div>
     </div>
