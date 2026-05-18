@@ -8,8 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="dns-prefetch" href="https://app.sandbox.midtrans.com">
-  <link rel="dns-prefetch" href="https://snap-assets.al-pc-id-b.cdn.gtflabs.io">
 
   <title>NextFlow Pro | Otomasi Entri Data Puskesmas Terbaik</title>
   <meta name="description" content="NextFlow Pro adalah software otomasi entri data terbaik untuk operator puskesmas. Hemat waktu hingga 80%, tingkatkan akurasi input data hingga 99%, dan eliminasi human error secara instan." />
@@ -99,12 +97,9 @@
   <link rel="icon" type="image/x-icon" href="assets/logo_icon.ico">
   <link rel="stylesheet" href="assets/style.css" />
   
-  <!-- Asynchronous stylesheet loading to eliminate render-blocking CSS -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></noscript>
-  
-  <!-- Synchronous load for Inter Font to eliminate Cumulative Layout Shift (CLS) completely -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- Asynchronous load for Inter Font (Zero Render-Blocking & Zero Cumulative Layout Shift via optional display fallback) -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=optional" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=optional"></noscript>
   <style>
     * { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
 
@@ -1270,7 +1265,6 @@
 
   <!-- ===== JAVASCRIPT ===== -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-YVNorDG5HZyKCjun"></script>
   <script>
     // ---- Navbar scroll effect ----
     const navbar = document.getElementById('navbar');
@@ -1587,6 +1581,25 @@ Terima kasih.`;
 
     let activeUser = null;
     let selectedTier = '';
+
+    // Load Midtrans Snap dynamically on-demand to speed up landing page load times by 700+ KB
+    function loadMidtransSnap() {
+      return new Promise((resolve, reject) => {
+        if (window.snap) {
+          resolve();
+          return;
+        }
+        const script = document.createElement('script');
+        script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
+        script.setAttribute('data-client-key', 'Mid-client-YVNorDG5HZyKCjun');
+        script.onload = () => {
+          console.log("Midtrans Snap loaded successfully!");
+          resolve();
+        };
+        script.onerror = (err) => reject(new Error("Gagal memuat metode pembayaran Midtrans. Silakan periksa koneksi internet Anda."));
+        document.body.appendChild(script);
+      });
+    }
 
     // ============================================================
     // SESSION MANAGEMENT
@@ -1946,14 +1959,18 @@ Terima kasih.`;
           btn.style.pointerEvents = 'none';
         });
 
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/create-payment`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`
-          },
-          body: JSON.stringify({ tier: selectedTier })
-        });
+        // Ambil token pembayaran dan unduh script Midtrans secara paralel (Menghemat load awal & mempercepat checkout!)
+        const [res, _] = await Promise.all([
+          fetch(`${SUPABASE_URL}/functions/v1/create-payment`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({ tier: selectedTier })
+          }),
+          loadMidtransSnap()
+        ]);
 
         const data = await res.json();
 
