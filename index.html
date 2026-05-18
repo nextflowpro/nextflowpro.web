@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="preconnect" href="https://app.sandbox.midtrans.com">
-  <link rel="preconnect" href="https://snap-assets.al-pc-id-b.cdn.gtflabs.io" crossorigin>
+  <link rel="dns-prefetch" href="https://app.sandbox.midtrans.com">
+  <link rel="dns-prefetch" href="https://snap-assets.al-pc-id-b.cdn.gtflabs.io">
 
   <title>NextFlow Pro | Otomasi Entri Data Puskesmas Terbaik</title>
   <meta name="description" content="NextFlow Pro adalah software otomasi entri data terbaik untuk operator puskesmas. Hemat waktu hingga 80%, tingkatkan akurasi input data hingga 99%, dan eliminasi human error secara instan." />
@@ -103,8 +103,8 @@
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></noscript>
   
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"></noscript>
+  <!-- Synchronous load for Inter Font to eliminate Cumulative Layout Shift (CLS) completely -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     * { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
 
@@ -405,6 +405,9 @@
       </div>
     </div>
   </nav>
+
+  <!-- ===== MAIN LANDMARK ===== -->
+  <main>
 
   <!-- ===== HERO SECTION ===== -->
   <section class="bg-hero min-h-screen flex items-center relative overflow-hidden pt-16">
@@ -1208,7 +1211,7 @@
         </a>
       </div>
     </div>
-  </section>
+  </main>
 
   <!-- ===== FOOTER ===== -->
   <footer class="py-12 bg-gray-950">
@@ -1221,7 +1224,7 @@
             <img src="assets/text_only.png" alt="NextFlow Pro" class="footer-logo-text h-10 w-auto opacity-95" width="160" height="40">
           </div>
           <p class="text-gray-400 text-sm leading-relaxed max-w-xs mb-4">Solusi otomasi entri data terpercaya untuk operator puskesmas di seluruh Indonesia. Lebih cepat, lebih akurat, lebih profesional.</p>
-          <p class="text-gray-500 text-xs">Ditenagai oleh teknologi AI & Intelligent Automation terkini.</p>
+          <p class="text-gray-400 text-xs">Ditenagai oleh teknologi AI & Intelligent Automation terkini.</p>
         </div>
         <!-- Links -->
         <div>
@@ -1256,10 +1259,10 @@
       </div>
 
       <div class="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-gray-500 text-xs text-center sm:text-left">© 2025 Copyright NextFlow Pro. Hak Cipta Dilindungi Undang-Undang.</p>
+        <p class="text-gray-400 text-xs text-center sm:text-left">© 2025 Copyright NextFlow Pro. Hak Cipta Dilindungi Undang-Undang.</p>
         <div class="flex items-center gap-4">
-          <span class="text-gray-600 text-xs flex items-center gap-1"><i class="fas fa-shield-halved text-teal-500"></i> SSL Secured</span>
-          <span class="text-gray-600 text-xs flex items-center gap-1"><i class="fas fa-lock text-amber-500"></i> Midtrans Verified</span>
+          <span class="text-gray-400 text-xs flex items-center gap-1"><i class="fas fa-shield-halved text-teal-500"></i> SSL Secured</span>
+          <span class="text-gray-400 text-xs flex items-center gap-1"><i class="fas fa-lock text-amber-500"></i> Midtrans Verified</span>
         </div>
       </div>
     </div>
