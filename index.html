@@ -1577,10 +1577,39 @@ Terima kasih.`;
     const SUPABASE_URL  = 'https://bwnwjdvmjihrymtwqgqb.supabase.co';
     const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_CcOtzzFTtjlbZBUOSd0UZA_zqnNWNAM';
 
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-
+    let sb = null;
     let activeUser = null;
     let selectedTier = '';
+
+    // Load Supabase dynamically to achieve a 100% PageSpeed score
+    function loadSupabase() {
+      return new Promise((resolve, reject) => {
+        if (window.supabase) {
+          if (!sb) {
+            sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+            sb.auth.onAuthStateChange((_event, session) => {
+              activeUser = session?.user ?? null;
+              updateNavbar();
+            });
+          }
+          resolve(sb);
+          return;
+        }
+        const script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+        script.onload = () => {
+          console.log("Supabase loaded successfully!");
+          sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+          sb.auth.onAuthStateChange((_event, session) => {
+            activeUser = session?.user ?? null;
+            updateNavbar();
+          });
+          resolve(sb);
+        };
+        script.onerror = (err) => reject(new Error("Gagal terhubung ke server autentikasi. Silakan periksa koneksi Anda."));
+        document.body.appendChild(script);
+      });
+    }
 
     // Load Midtrans Snap dynamically on-demand to speed up landing page load times by 700+ KB
     function loadMidtransSnap() {
@@ -1606,16 +1635,19 @@ Terima kasih.`;
     // ============================================================
 
     async function checkSession() {
-      const { data: { session } } = await sb.auth.getSession();
-      activeUser = session?.user ?? null;
-      updateNavbar();
+      try {
+        await loadSupabase();
+        const { data: { session } } = await sb.auth.getSession();
+        activeUser = session?.user ?? null;
+        updateNavbar();
+      } catch (err) {
+        console.error("Supabase load error during init:", err);
+      }
     }
-    checkSession();
 
-    // Listen untuk perubahan auth state
-    sb.auth.onAuthStateChange((_event, session) => {
-      activeUser = session?.user ?? null;
-      updateNavbar();
+    // Delay checking session slightly after page loads to keep rendering blazingly fast
+    window.addEventListener('load', () => {
+      setTimeout(checkSession, 150);
     });
 
     // ============================================================
@@ -1800,6 +1832,7 @@ Terima kasih.`;
       btnTxt.innerText = 'Memproses...';
       clearAuthMessages();
 
+      await loadSupabase();
       const { data, error } = await sb.auth.signInWithPassword({ email, password });
 
       if (error) {
@@ -1853,6 +1886,7 @@ Terima kasih.`;
       btn.disabled = true;
       btnTxt.innerText = 'Membuat akun...';
 
+      await loadSupabase();
       const { data, error } = await sb.auth.signUp({ email, password });
 
       if (error) {
@@ -1903,6 +1937,7 @@ Terima kasih.`;
       btn.disabled = true;
       btnTxt.innerText = 'Mengirim...';
 
+      await loadSupabase();
       const { error } = await sb.auth.resetPasswordForEmail(email, {
         redirectTo: window.location.origin + window.location.pathname + '?reset=true',
       });
@@ -1922,6 +1957,7 @@ Terima kasih.`;
     // ============================================================
 
     async function handleLogout() {
+      await loadSupabase();
       await sb.auth.signOut();
       activeUser = null;
       tutupDashboard();
@@ -1946,6 +1982,7 @@ Terima kasih.`;
       if (!activeUser || !selectedTier) return;
 
       try {
+        await loadSupabase();
         const { data: { session } } = await sb.auth.getSession();
         if (!session) {
           bukaModal('login');
@@ -2030,6 +2067,7 @@ Terima kasih.`;
       });
 
       try {
+        await loadSupabase();
         const { data: { session } } = await sb.auth.getSession();
         const res = await fetch(`${SUPABASE_URL}/functions/v1/claim-free-license`, {
           method: 'POST',
@@ -2072,6 +2110,7 @@ Terima kasih.`;
       });
 
       try {
+        await loadSupabase();
         const { data: { session } } = await sb.auth.getSession();
         const res = await fetch(`${SUPABASE_URL}/functions/v1/claim-free-license`, {
           method: 'POST',
@@ -2226,6 +2265,7 @@ Terima kasih.`;
       btn.disabled   = true;
       btn.innerText  = 'Menyimpan...';
 
+      await loadSupabase();
       const { error } = await sb.auth.updateUser({ password: newPwd });
 
       if (error) {
