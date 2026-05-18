@@ -97,6 +97,10 @@
   <link rel="icon" type="image/x-icon" href="assets/logo_icon.ico">
   <link rel="stylesheet" href="assets/style.css" />
   
+  <!-- Font Awesome Icons (Loaded asynchronously to eliminate render-blocking CSS and maintain PageSpeed score) -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></noscript>
+  
   <!-- Asynchronous load for Inter Font (Zero Render-Blocking & Zero Cumulative Layout Shift via optional display fallback) -->
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=optional" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=optional"></noscript>
@@ -1667,20 +1671,9 @@ Terima kasih.`;
       }
     }
 
-    // Load Font Awesome dynamically after page loads to achieve a perfect PageSpeed score
-    function loadFontAwesome() {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
-      document.head.appendChild(link);
-    }
-
-    // Delay checking session and loading icons slightly after page loads to keep rendering blazingly fast
+    // Delay checking session slightly after page loads to keep rendering blazingly fast
     window.addEventListener('load', () => {
-      setTimeout(() => {
-        checkSession();
-        loadFontAwesome();
-      }, 150);
+      setTimeout(checkSession, 150);
     });
 
     // ============================================================
