@@ -11,7 +11,7 @@ type Tier = "Basic" | "Pro";
 const PRODUCT_MAP: Record<Tier, { name: string; amount: number }> = {
   Basic: {
     name: "Nextflow Pro Basic - 30 Hari",
-    amount: 255000,
+    amount: 250000,
   },
   Pro: {
     name: "Nextflow Pro Pro - 30 Hari",
@@ -68,150 +68,189 @@ async function sendInvoiceEmail(params: {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tagihan Pembayaran Nextflow Pro</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 0;
       font-family: 'Inter', Helvetica, Arial, sans-serif;
-      background-color: #f8fafc;
-      color: #0f172a;
+      background-color: #0a1628;
     }
   </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #f8fafc;">
+<body style="margin: 0; padding: 0; background-color: #0a1628;">
 
-  <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; padding: 40px 16px;">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #0a1628; padding: 40px 16px;">
     <tr>
       <td align="center">
 
-        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto;">
           
-          <!-- HEADER -->
+          <!-- LOGO HEADER -->
           <tr>
-            <td align="center" style="background-color: #0f172a; padding: 32px 24px;">
-              <img src="https://nextflowpro.github.io/nextflowpro.web/assets/text_only.png" alt="NextFlow Pro" style="height: 32px; display: block; border: none;">
+            <td align="center" style="padding-bottom: 24px;">
+              <div style="display: inline-block; background-color: #122851; padding: 14px 28px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <img src="https://nextflowpro.github.io/nextflowpro.web/assets/text_only.png" alt="NextFlow Pro" style="height: 36px; width: auto; display: block; margin: 0 auto; border: none;">
+              </div>
             </td>
           </tr>
 
-          <!-- CONTENT -->
+          <!-- MAIN CONTAINER -->
           <tr>
-            <td style="padding: 40px 32px;">
+            <td style="background-color: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
               
-              <div style="display: inline-block; padding: 6px 16px; background-color: #fef3c7; color: #d97706; border-radius: 9999px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 24px;">
-                ⚠️ MENUNGGU PEMBAYARAN
-              </div>
-
-              <h1 style="margin: 0 0 16px; font-size: 24px; font-weight: 800; color: #0f172a; line-height: 1.2;">
-                Tagihan Pembayaran Nextflow Pro
-              </h1>
-              
-              <p style="margin: 0 0 24px; color: #475569; font-size: 15px; line-height: 1.6;">
-                Terima kasih telah memilih <strong>Nextflow Pro</strong>. Silakan lakukan transfer pembayaran sesuai rincian di bawah ini. Setelah membayar, <strong>silakan balas/reply email ini dengan melampirkan foto bukti transfer/resi pembayaran</strong>.
-              </p>
-
-              <!-- PAYMENT DETAILS -->
-              <div style="background-color: #f1f5f9; border-radius: 16px; padding: 24px; margin-bottom: 32px;">
-                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #64748b; margin-bottom: 16px; text-align: center;">Tujuan Transfer Bank</div>
-                
-                <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
-                  ${
-                    bankName2 && bankAccount2
-                      ? `
-                      <tr>
-                        <td style="padding: 4px 0; color: #475569; font-size: 14px; font-weight: 600;" colspan="2">Pilihan Rekening 1:</td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 4px 0 8px 12px; color: #475569; font-size: 14px;">Bank / Atas Nama</td>
-                        <td style="padding: 4px 0 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right;">${bankName} <br><span style="font-size: 12px; color: #64748b; font-weight: normal;">a/n ${bankHolder}</span></td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 4px 0 8px 12px; color: #475569; font-size: 14px;">Nomor Rekening</td>
-                        <td style="padding: 4px 0 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right; font-family: monospace;">${bankAccount}</td>
-                      </tr>
-                      <tr style="border-top: 1px dashed #cbd5e1;">
-                        <td style="padding: 12px 0 4px; color: #475569; font-size: 14px; font-weight: 600;" colspan="2">Pilihan Rekening 2:</td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 4px 0 8px 12px; color: #475569; font-size: 14px;">Bank / Atas Nama</td>
-                        <td style="padding: 4px 0 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right;">${bankName2} <br><span style="font-size: 12px; color: #64748b; font-weight: normal;">a/n ${bankHolder2 || bankHolder}</span></td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 4px 0 8px 12px; color: #475569; font-size: 14px;">Nomor Rekening</td>
-                        <td style="padding: 4px 0 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right; font-family: monospace;">${bankAccount2}</td>
-                      </tr>
-                      `
-                      : `
-                      <tr>
-                        <td style="padding: 8px 0; color: #475569; font-size: 14px;">Bank</td>
-                        <td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right;">${bankName}</td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 8px 0; color: #475569; font-size: 14px;">Nomor Rekening</td>
-                        <td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right; font-family: monospace;">${bankAccount}</td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 8px 0; color: #475569; font-size: 14px;">Atas Nama</td>
-                        <td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right;">${bankHolder}</td>
-                      </tr>
-                      `
-                  }
-                  <tr style="border-top: 1px solid #cbd5e1;">
-                    <td style="padding: 12px 0 0; color: #475569; font-size: 14px; font-weight: 600;">Jumlah Transfer</td>
-                    <td style="padding: 12px 0 0; font-weight: 800; color: #0f9f88; font-size: 18px; text-align: right;">Rp ${params.amount.toLocaleString("id-ID")}</td>
-                  </tr>
-                </table>
-
-                ${qrisSection}
-              </div>
-
-              <!-- TRANSACTION INFO -->
-              <table style="width: 100%; border-collapse: collapse; margin-bottom: 32px; border: 1px solid #e2e8f0; border-radius: 12px; display: table;">
-                <tr style="border-bottom: 1px solid #e2e8f0;">
-                  <td style="color: #64748b; font-size: 13px; padding: 12px 16px; text-align: left;">Paket</td>
-                  <td style="font-weight: 600; color: #0f172a; font-size: 13px; padding: 12px 16px; text-align: right;">${params.tier}</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #e2e8f0;">
-                  <td style="color: #64748b; font-size: 13px; padding: 12px 16px; text-align: left;">Nomor Invoice</td>
-                  <td style="font-weight: 600; color: #0f172a; font-size: 13px; padding: 12px 16px; text-align: right;">${params.invoiceNumber}</td>
-                </tr>
+              <!-- GRADIENT HEADER (Same as License Email) -->
+              <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #07153b 0%, #1a3a6e 100%); background-color: #0f2557;">
                 <tr>
-                  <td style="color: #64748b; font-size: 13px; padding: 12px 16px; text-align: left;">Order ID</td>
-                  <td style="font-weight: 600; color: #0f172a; font-size: 13px; padding: 12px 16px; text-align: right; font-family: monospace;">${params.orderId}</td>
-                </tr>
-              </table>
+                  <td align="center" style="padding: 48px 32px;">
+                    
+                    <div style="display: inline-block; padding: 6px 16px; background-color: rgba(217,119,6,0.2); border: 1px solid rgba(217,119,6,0.5); border-radius: 50px; color: #fbbf24; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 20px;">
+                      ● MENUNGGU PEMBAYARAN
+                    </div>
 
-              <!-- INSTRUCTION BOX -->
-              <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 0 8px 8px 0; margin-bottom: 32px;">
-                <tr>
-                  <td style="padding: 16px;">
-                    <p style="color:#1e40af; font-size:14px; font-weight:700; margin:0 0 6px;">
-                      💡 Langkah Selanjutnya
+                    <h1 style="color: #ffffff; font-size: 24px; font-weight: 900; margin: 0 0 8px; letter-spacing: -0.5px; line-height: 1.3;">
+                      Tagihan Pembayaran
+                    </h1>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 14px; margin: 0; line-height: 1.5;">
+                      Silakan selesaikan pembayaran untuk mengaktifkan lisensi Anda
                     </p>
-                    <ol style="margin: 0; padding-left: 20px; font-size: 13px; line-height:1.6; color: #1e3a8a;">
-                      <li>Lakukan transfer sebesar <strong>Rp ${params.amount.toLocaleString("id-ID")}</strong> ke rekening di atas.</li>
-                      <li>Foto atau screenshot bukti pembayaran/resi transfer Anda.</li>
-                      <li><strong>Balas (Reply)</strong> email ini dengan melampirkan foto bukti pembayaran tersebut.</li>
-                      <li>Sistem kami akan memverifikasi dan mengirimkan token aktivasi lisensi ke email Anda secara otomatis.</li>
-                    </ol>
+
                   </td>
                 </tr>
               </table>
 
-              <p style="font-size: 13px; text-align: center; color: #94a3b8; margin: 0;">
-                Ada pertanyaan? Balas email ini atau hubungi support kami via WhatsApp di <a href="https://wa.me/6281234899273" style="color: #0f9f88; text-decoration: none; font-weight: 600;">+62 812-3489-9273</a>.
-              </p>
+              <!-- BODY -->
+              <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="padding: 40px 32px 32px;">
+                    
+                    <p style="color:#374151; font-size:16px; font-weight:600; margin:0 0 8px;">
+                      Halo Operator Hebat Puskesmas! 👋
+                    </p>
+                    <p style="color:#4b5563; font-size:14px; line-height:1.7; margin:0 0 32px;">
+                      Terima kasih telah memilih <strong style="color:#0f2557;">NextFlow Pro</strong> — platform otomasi entri data terdepan untuk operator puskesmas modern. Silakan lakukan transfer pembayaran sesuai rincian di bawah ini. Setelah melakukan transfer, silakan balas email ini dengan melampirkan bukti pembayaran dan nama pengguna email Anda.
+                    </p>
+
+                    <!-- PAYMENT DETAILS -->
+                    <div style="background-color: #f1f5f9; border-radius: 16px; padding: 24px; margin: 32px 0;">
+                      <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #64748b; margin-bottom: 16px; text-align: center;">Tujuan Transfer Bank</div>
+                      
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                        ${
+                          bankName2 && bankAccount2
+                            ? `
+                            <tr>
+                              <td style="padding: 4px 0; color: #475569; font-size: 14px; font-weight: 600;" colspan="2">Pilihan Rekening 1:</td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 4px 0 8px 12px; color: #475569; font-size: 14px;">Bank / Atas Nama</td>
+                              <td style="padding: 4px 0 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right;">${bankName} <br><span style="font-size: 12px; color: #64748b; font-weight: normal;">a/n ${bankHolder}</span></td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 4px 0 8px 12px; color: #475569; font-size: 14px;">Nomor Rekening</td>
+                              <td style="padding: 4px 0 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right; font-family: monospace;">${bankAccount}</td>
+                            </tr>
+                            <tr style="border-top: 1px dashed #cbd5e1;">
+                              <td style="padding: 12px 0 4px; color: #475569; font-size: 14px; font-weight: 600;" colspan="2">Pilihan Rekening 2:</td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 4px 0 8px 12px; color: #475569; font-size: 14px;">Bank / Atas Nama</td>
+                              <td style="padding: 4px 0 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right;">${bankName2} <br><span style="font-size: 12px; color: #64748b; font-weight: normal;">a/n ${bankHolder2 || bankHolder}</span></td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 4px 0 8px 12px; color: #475569; font-size: 14px;">Nomor Rekening</td>
+                              <td style="padding: 4px 0 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right; font-family: monospace;">${bankAccount2}</td>
+                            </tr>
+                            `
+                            : `
+                            <tr>
+                              <td style="padding: 8px 0; color: #475569; font-size: 14px;">Bank</td>
+                              <td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right;">${bankName}</td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 8px 0; color: #475569; font-size: 14px;">Nomor Rekening</td>
+                              <td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right; font-family: monospace;">${bankAccount}</td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 8px 0; color: #475569; font-size: 14px;">Atas Nama</td>
+                              <td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; text-align: right;">${bankHolder}</td>
+                            </tr>
+                            `
+                        }
+                        <tr style="border-top: 1px solid #cbd5e1;">
+                          <td style="padding: 12px 0 0; color: #475569; font-size: 14px; font-weight: 600;">Jumlah Transfer</td>
+                          <td style="padding: 12px 0 0; font-weight: 800; color: #0f9f88; font-size: 18px; text-align: right;">Rp ${params.amount.toLocaleString("id-ID")}</td>
+                        </tr>
+                      </table>
+
+                      ${qrisSection}
+                    </div>
+
+                    <!-- TRANSACTION INFO -->
+                    <table style="width: 100%; border-collapse: collapse; margin: 32px 0; border: 1px solid #e2e8f0; border-radius: 12px; display: table;">
+                      <tr style="border-bottom: 1px solid #e2e8f0;">
+                        <td style="color: #64748b; font-size: 13px; padding: 12px 16px; text-align: left;">Paket</td>
+                        <td style="font-weight: 600; color: #0f172a; font-size: 13px; padding: 12px 16px; text-align: right;">${params.tier}</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid #e2e8f0;">
+                        <td style="color: #64748b; font-size: 13px; padding: 12px 16px; text-align: left;">Nomor Invoice</td>
+                        <td style="font-weight: 600; color: #0f172a; font-size: 13px; padding: 12px 16px; text-align: right;">${params.invoiceNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style="color: #64748b; font-size: 13px; padding: 12px 16px; text-align: left;">Order ID</td>
+                        <td style="font-weight: 600; color: #0f172a; font-size: 13px; padding: 12px 16px; text-align: right; font-family: monospace;">${params.orderId}</td>
+                      </tr>
+                    </table>
+
+                    <!-- INSTRUCTION BOX -->
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 0 8px 8px 0; margin-bottom: 32px;">
+                      <tr>
+                        <td style="padding: 16px;">
+                          <p style="color:#1e40af; font-size:14px; font-weight:700; margin:0 0 6px;">
+                            💡 Langkah Selanjutnya
+                          </p>
+                          <ol style="margin: 0; padding-left: 20px; font-size: 13px; line-height:1.6; color: #1e3a8a;">
+                            <li>Lakukan transfer sebesar <strong>Rp ${params.amount.toLocaleString("id-ID")}</strong> ke salah satu rekening di atas.</li>
+                            <li>Foto atau screenshot bukti pembayaran/resi transfer Anda.</li>
+                            <li><strong>Balas (Reply)</strong> email ini dengan melampirkan foto bukti pembayaran tersebut dan cantumkan Nama Pengguna Email Anda.</li>
+                            <li>Sistem kami akan memverifikasi dan mengirimkan token aktivasi lisensi ke email Anda secara otomatis.</li>
+                          </ol>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <p style="font-size: 13px; text-align: center; color: #94a3b8; margin: 0;">
+                      Ada pertanyaan? Balas email ini atau hubungi support kami via WhatsApp di <a href="https://wa.me/6281234899273" style="color: #0f9f88; text-decoration: none; font-weight: 600;">+62 812-3489-9273</a>.
+                    </p>
+
+                  </td>
+                </tr>
+              </table>
+
+              <!-- FOOTER -->
+              <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="padding: 32px; background-color: #f1f5f9; border-top: 1px solid #e2e8f0;">
+                    <p style="color: #94a3b8; font-size: 11px; margin: 0; line-height: 1.5;">
+                      &copy; 2026 <strong>NextFlow Pro</strong>. Hak Cipta Dilindungi.<br>
+                      Email ini dikirim otomatis oleh sistem billing NextFlow Pro.
+                    </p>
+                  </td>
+                </tr>
+              </table>
 
             </td>
           </tr>
 
-          <!-- FOOTER -->
+          <!-- COPYRIGHT BOTTOM -->
           <tr>
-            <td align="center" style="padding: 32px; background-color: #f1f5f9; border-top: 1px solid #e2e8f0;">
-              <p style="color: #94a3b8; font-size: 11px; margin: 0; line-height: 1.5;">
-                &copy; 2026 <strong>NextFlow Pro</strong>. Hak Cipta Dilindungi.<br>
-                Email ini dikirim otomatis oleh sistem billing NextFlow Pro.
+            <td align="center" style="padding: 24px 16px;">
+              <p style="color:#6b7280; font-size:12px; margin:0 0 6px;">
+                Butuh bantuan? &nbsp;
+                <a href="mailto:nextflow.auto@gmail.com" style="color:#0d9488; text-decoration:none; font-weight:600;">nextflow.auto@gmail.com</a>
+                &nbsp;·&nbsp;
+                <a href="https://wa.me/6281234899273" style="color:#0d9488; text-decoration:none; font-weight:600;">+62 812-3489-9273</a>
               </p>
             </td>
           </tr>
