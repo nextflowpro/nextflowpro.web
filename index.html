@@ -2027,18 +2027,15 @@ Terima kasih.`;
           btn.style.pointerEvents = 'none';
         });
 
-        // Ambil token pembayaran dan unduh script Midtrans secara paralel (Menghemat load awal & mempercepat checkout!)
-        const [res, _] = await Promise.all([
-          fetch(`${SUPABASE_URL}/functions/v1/create-payment`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${session.access_token}`
-            },
-            body: JSON.stringify({ tier: selectedTier })
-          }),
-          loadMidtransSnap()
-        ]);
+        // Panggil endpoint Manual Invoice
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/create-manual-invoice`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`
+          },
+          body: JSON.stringify({ tier: selectedTier })
+        });
 
         const data = await res.json();
 
@@ -2052,7 +2049,31 @@ Terima kasih.`;
           throw new Error(data.message || 'Gagal membuat tagihan');
         }
 
-        window.snap.pay(data.snap_token, {
+        // Tampilkan modal sukses transfer manual
+        tampilkanManualSuksesPayment(selectedTier, data.invoice_number || data.order_id);
+        selectedTier = '';
+
+        /* --- KODE MIDTRANS ASLI (NON-AKTIF) ---
+        // Ambil token pembayaran dan unduh script Midtrans secara paralel (Menghemat load awal & mempercepat checkout!)
+        const [resMidtrans, _] = await Promise.all([
+          fetch(`${SUPABASE_URL}/functions/v1/create-payment`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({ tier: selectedTier })
+          }),
+          loadMidtransSnap()
+        ]);
+
+        const dataMidtrans = await resMidtrans.json();
+
+        if (!resMidtrans.ok || !dataMidtrans.success) {
+          throw new Error(dataMidtrans.message || 'Gagal membuat tagihan');
+        }
+
+        window.snap.pay(dataMidtrans.snap_token, {
           onSuccess: async function(result) {
             tampilkanSuksesPayment(selectedTier, result.order_id);
             selectedTier = '';
@@ -2077,11 +2098,41 @@ Terima kasih.`;
             selectedTier = '';
           }
         });
+        ------------------------------------------ */
 
       } catch (err) {
         console.error(err);
         alert('Terjadi kesalahan: ' + err.message);
       }
+    }
+
+    function tampilkanManualSuksesPayment(tier, invoiceNumber) {
+      // Buka modal sukses manual dengan animasi anggun
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60] px-4 animate-fade-in';
+      modal.innerHTML = `
+        <div class="bg-slate-800 border border-teal-500/30 w-full max-w-md rounded-2xl p-8 text-center shadow-2xl transition-all duration-300 transform scale-100">
+          <div class="w-16 h-16 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-paper-plane text-teal-400 text-3xl"></i>
+          </div>
+          <h3 class="text-white text-xl font-bold mb-2">Invoice Telah Dikirim!</h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-6">
+            Rincian tagihan untuk <strong class="text-teal-400">Paket ${tier}</strong> telah dikirim ke email Anda. 
+            Silakan selesaikan pembayaran dan <strong class="text-teal-400">balas email tersebut dengan bukti transfer</strong> untuk mendapatkan Token Lisensi Anda secara otomatis.
+          </p>
+          <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-700 mb-6 text-left">
+            <p class="text-xs text-slate-400 mb-1">Nomor Invoice / Tagihan</p>
+            <p class="text-white text-sm font-mono font-semibold">${invoiceNumber}</p>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="this.closest('.fixed').remove();"
+              class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg hover:shadow-teal-500/20">
+              Saya Mengerti, Cek Email
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
     }
 
     async function klaimFreeTrial() {

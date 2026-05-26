@@ -31,3 +31,15 @@ entrypoint = "./functions/claim-free-license/index.ts"
 # Specifies static files to be bundled with the function. Supports glob patterns.
 # For example, if you want to serve static HTML pages in your function:
 # static_files = [ "./functions/claim-free-license/*.html" ]
+
+[functions.create-manual-invoice]
+enabled = true
+verify_jwt = true
+import_map = "./functions/create-manual-invoice/deno.json"
+entrypoint = "./functions/create-manual-invoice/index.ts"
+
+[functions.email-webhook]
+enabled = true
+verify_jwt = false
+import_map = "./functions/email-webhook/deno.json"
+entrypoint = "./functions/email-webhook/index.ts"
