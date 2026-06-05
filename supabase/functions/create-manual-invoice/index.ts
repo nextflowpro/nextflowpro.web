@@ -15,7 +15,7 @@ const PRODUCT_MAP: Record<Tier, { name: string; amount: number }> = {
   },
   Pro: {
     name: "Nextflow Pro Pro - 30 Hari",
-    amount: 305000,
+    amount: 300000,
   },
 };
 
