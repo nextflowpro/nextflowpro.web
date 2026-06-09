@@ -11,11 +11,11 @@ type Tier = "Basic" | "Pro";
 const PRODUCT_MAP: Record<Tier, { name: string; amount: number }> = {
   Basic: {
     name: "Nextflow Pro Basic - 30 Hari",
-    amount: 250000,
+    amount: 205000,
   },
   Pro: {
     name: "Nextflow Pro Pro - 30 Hari",
-    amount: 305000,
+    amount: 255000,
   },
 };
 
